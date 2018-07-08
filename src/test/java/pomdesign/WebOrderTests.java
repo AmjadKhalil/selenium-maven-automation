@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pages.AllOrdersPage;
+import pages.OrdersPage;
 import pages.ProductsPage;
 import pages.WebOrdersLoginPage;
 
@@ -28,8 +29,10 @@ public class WebOrderTests {
 	 WebOrdersLoginPage loginPage;
 	 AllOrdersPage allOrdersPage;
 	 ProductsPage productsPage;
+	 OrdersPage ordersPage;
 	 String userId = "Tester";
 	 String password = "test";
+	 String newCus = "Nancy Black";
 	 
 	 @BeforeClass
 	 public void setUp() {
@@ -98,12 +101,34 @@ public class WebOrderTests {
 					assertEquals(prodData[1], "$20");
 					assertEquals(prodData[2], "10%");
 					break;
-					
 			}
-		
 		}
-		 
 	 }
+	 
+	 
+	 @Test (description = "veifying the addition of a new order")
+	 public void newOrderTest() {
+		assertEquals(driver.getTitle(), "Web Orders Login", "Login Page is not displayed. Application is down."); 
+		loginPage.login("Tester", "test");
+		allOrdersPage = new AllOrdersPage(driver);
+		allOrdersPage.orderTab.click();
+		ordersPage = new OrdersPage(driver); 
+		ordersPage.quantity.sendKeys("3");
+		ordersPage.cusName.sendKeys(newCus);
+		ordersPage.street.sendKeys("South Smith");
+		ordersPage.city.sendKeys("Charlseville");
+		ordersPage.state.sendKeys("OH");
+		ordersPage.zip.sendKeys("29937");
+		ordersPage.cardType.click();
+		ordersPage.cardNr.sendKeys("111822286622");
+		ordersPage.expDate.sendKeys("12/22");
+		ordersPage.processBtn.click();
+		
+		allOrdersPage = new AllOrdersPage(driver);
+		allOrdersPage.viewAllOrders.click();
+		assertEquals(allOrdersPage.newName.getText(), newCus);
+	 }
+	 
 	 
 	 
 	 @AfterMethod
