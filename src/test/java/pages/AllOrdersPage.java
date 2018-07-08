@@ -34,8 +34,13 @@ public class AllOrdersPage {
 	public WebElement logoutLink;
 	
 
+	@FindBy(xpath="//table[@class='SampleTable']//tr[2]//td[2]")
+	public WebElement newName;
+	
+	
 	public void logout() {
 		logoutLink.click();
 	}
+	
 	
 }
